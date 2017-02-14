@@ -25,6 +25,7 @@ import (
 	"gcp-service-broker/brokerapi"
 	"gcp-service-broker/brokerapi/brokers"
 	"gcp-service-broker/brokerapi/brokers/name_generator"
+	"gcp-service-broker/creds"
 	"gcp-service-broker/db_service"
 	"gcp-service-broker/brokerapi/brokers/models"
 )
@@ -46,8 +47,8 @@ func main() {
 		logger.Fatal("Error initializing service broker: %s", err)
 	}
 
-	username := os.Getenv("SECURITY_USER_NAME")
-	password := os.Getenv("SECURITY_USER_PASSWORD")
+	username := creds.GetSecurityUserName()
+	password := creds.GetSecurityUserPassword()
 
 	credentials := brokerapi.BrokerCredentials{
 		Username: username,

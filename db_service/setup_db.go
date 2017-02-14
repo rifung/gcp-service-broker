@@ -25,6 +25,7 @@ import (
 	"os"
 
 	"code.cloudfoundry.org/lager"
+	"gcp-service-broker/creds"
 	"github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
@@ -32,9 +33,9 @@ import (
 // pulls db credentials from the environment, connects to the db, runs migrations, and returns the db connection
 func SetupDb(logger lager.Logger) *gorm.DB {
 	// connect to database
-	dbHost := os.Getenv("DB_HOST")
-	dbUsername := os.Getenv("DB_USERNAME")
-	dbPassword := os.Getenv("DB_PASSWORD")
+	dbHost := creds.GetDbHost()
+	dbUsername := creds.GetDbUserName()
+	dbPassword := creds.GetDbPassword()
 	dbPort := os.Getenv("DB_PORT")
 	if dbPort == "" {
 		dbPort = "3306"

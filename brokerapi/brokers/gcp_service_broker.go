@@ -37,6 +37,7 @@ import (
 	"gcp-service-broker/brokerapi/brokers/models"
 	"gcp-service-broker/brokerapi/brokers/pubsub"
 	"gcp-service-broker/brokerapi/brokers/storage"
+	"gcp-service-broker/creds"
 	"gcp-service-broker/db_service"
 	"gcp-service-broker/utils"
 )
@@ -425,7 +426,7 @@ func GetCredentialsFromEnv() (models.GCPCredentials, error) {
 	var err error
 	g := models.GCPCredentials{}
 
-	rootCreds := os.Getenv(models.RootSaEnvVar)
+	rootCreds := creds.GetRootCreds()
 	if err = json.Unmarshal([]byte(rootCreds), &g); err != nil {
 		return models.GCPCredentials{}, fmt.Errorf("Error unmarshalling service account json: %s", err)
 	}

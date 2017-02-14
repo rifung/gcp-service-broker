@@ -20,6 +20,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gcp-service-broker/brokerapi/brokers/models"
+	"gcp-service-broker/creds"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"net/http"
@@ -27,7 +28,7 @@ import (
 )
 
 func SetGCPCredsFromEnv() error {
-	rootCreds := os.Getenv(models.RootSaEnvVar)
+	rootCreds := creds.GetRootCreds()
 
 	fo, err := os.Create(models.AppCredsFileName)
 	if err != nil {
@@ -65,7 +66,7 @@ func MapServiceIdToName() (map[string]string, error) {
 }
 
 func GetAuthedClient() (*http.Client, error) {
-	rootCreds := os.Getenv(models.RootSaEnvVar)
+	rootCreds := creds.GetRootCreds()
 	conf, err := google.JWTConfigFromJSON([]byte(rootCreds), models.CloudPlatformScope)
 	if err != nil {
 		return nil, fmt.Errorf("Error initializing default client from credentials: %s", err)

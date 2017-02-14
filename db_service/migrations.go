@@ -21,10 +21,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"gcp-service-broker/brokerapi/brokers/models"
+	"gcp-service-broker/creds"
 	"gcp-service-broker/utils"
 	"github.com/jinzhu/gorm"
 	googlecloudsql "google.golang.org/api/sqladmin/v1beta4"
-	"os"
 )
 
 // runs schema migrations on the provided service broker database to get it up to date
@@ -127,7 +127,7 @@ func RunMigrations(db *gorm.DB) error {
 		// copy provision request details into service instance details
 
 		serviceAccount := make(map[string]string)
-		if err := json.Unmarshal([]byte(os.Getenv("ROOT_SERVICE_ACCOUNT_JSON")), &serviceAccount); err != nil {
+		if err := json.Unmarshal([]byte(creds.GetRootCreds()), &serviceAccount); err != nil {
 			return err
 		}
 
