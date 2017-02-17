@@ -42,9 +42,6 @@ public class StorageAPI {
   @Autowired
   private Storage storageService;
 
-  @Value("${gcp-storage-bucket}")
-  private String bucketName;
-
   /**
    * Uploads a JPEG image to Cloud Storage.
    * @param name The name of the image
@@ -60,7 +57,7 @@ public class StorageAPI {
         .setAcl(Arrays.asList(new ObjectAccessControl().setEntity("allUsers").setRole("READER")))
         .setMetadata(metadata);
 
-    storageService.objects().insert(bucketName, objectMetadata, contentStream).execute();
+    storageService.objects().insert(VisionConfig.bucketName, objectMetadata, contentStream).execute();
   }
 
   /**
@@ -69,7 +66,7 @@ public class StorageAPI {
    * @throws GeneralSecurityException
    */
   public List<StorageObject> listAll() throws IOException, GeneralSecurityException {
-    Storage.Objects.List listRequest = storageService.objects().list(bucketName);
+    Storage.Objects.List listRequest = storageService.objects().list(VisionConfig.bucketName);
 
     List<StorageObject> results = new ArrayList<StorageObject>();
     Objects objects;
@@ -97,7 +94,7 @@ public class StorageAPI {
    */
   public StorageObject get(String name) {
     try {
-      return storageService.objects().get(bucketName, name).execute();
+      return storageService.objects().get(VisionConfig.bucketName, name).execute();
     } catch (IOException e) {
       return null;
     }

@@ -41,6 +41,13 @@ import com.google.api.services.vision.v1.VisionScopes;
 @Configuration
 public class VisionConfig {
 
+  public static final String bucketName = getBase64EnvVar("BUCKET_NAME");
+
+  private static String getBase64EnvVar(String key) {
+    // strip quotes around it; TODO figure out why broker is doing this
+    return System.getenv(key).replaceAll("\"", "");
+  }
+
   @Value("${gcp-application-name}")
   private String applicationName;
 
@@ -56,9 +63,7 @@ public class VisionConfig {
 
   @Bean
   GoogleCredential credential() throws IOException {
-    // strip quotes around it
-    String privateKeyData = System.getenv("PRIVATE_KEY_DATA")
-            .replaceAll("\"", "");
+    String privateKeyData = VisionConfig.getBase64EnvVar("PRIVATE_KEY_DATA");
 
     InputStream stream = new ByteArrayInputStream(Base64.getDecoder().decode(privateKeyData));
     return GoogleCredential.fromStream(stream);
