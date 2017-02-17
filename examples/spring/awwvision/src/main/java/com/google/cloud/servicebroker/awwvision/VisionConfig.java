@@ -56,14 +56,9 @@ public class VisionConfig {
 
   @Bean
   GoogleCredential credential() throws IOException {
-    String env = System.getenv("VCAP_SERVICES");
-    
-    String privateKeyData =
-        new JSONObject(env)
-          .getJSONArray("google-storage")
-          .getJSONObject(0)
-          .getJSONObject("credentials")
-          .getString("PrivateKeyData");
+    // strip quotes around it
+    String privateKeyData = System.getenv("PRIVATE_KEY_DATA")
+            .replaceAll("\"", "");
 
     InputStream stream = new ByteArrayInputStream(Base64.getDecoder().decode(privateKeyData));
     return GoogleCredential.fromStream(stream);
