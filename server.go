@@ -58,5 +58,5 @@ func main() {
 	// init api
 	brokerAPI := brokerapi.New(serviceBroker, logger, credentials)
 	http.Handle("/", brokerAPI)
-	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	http.ListenAndServe(":"+creds.GetPort(), nil)
 }

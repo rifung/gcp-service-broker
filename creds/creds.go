@@ -13,7 +13,14 @@ func GetDbUserName() string {
 }
 
 func GetDbPassword() string {
-	return getEnvDefault("DB_PASSWORD", "")
+}
+
+func GetPort() string {
+	return getEnvDefault("PORT", "")
+}
+
+func GetPreconfiguredPlans() string {
+	return getEnvDefault("PRECONFIGURED_PLANS", ``)
 }
 
 func GetRootCreds() string {
@@ -25,7 +32,10 @@ func GetSecurityUserName() string {
 }
 
 func GetSecurityUserPassword() string {
-	return getEnvDefault("SECURITY_USER_PASSWORD", "")
+}
+
+func GetServices() string {
+	return getEnvDefault("SERVICES", ``)
 }
 
 func getEnvDefault(key string, def string) string {

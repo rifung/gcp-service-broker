@@ -438,7 +438,7 @@ func getStaticPlans() (map[string][]models.ServicePlan, error) {
 	servicePlans := make(map[string][]models.ServicePlan)
 
 	// get static plans
-	planJson := os.Getenv("PRECONFIGURED_PLANS")
+	planJson := creds.GetPreconfiguredPlans()
 	var plans []map[string]interface{}
 
 	err := json.Unmarshal([]byte(planJson), &plans)
@@ -606,7 +606,7 @@ func InitCatalogFromEnv() ([]models.Service, error) {
 	// set up services
 	var serviceList []models.Service
 
-	catalogJson := os.Getenv("SERVICES")
+	catalogJson := creds.GetServices()
 	var cat []models.Service
 
 	err = json.Unmarshal([]byte(catalogJson), &cat)
