@@ -160,10 +160,10 @@ kubectl get pods
 Now we need to expose the service
 
 ```
-kubectl expose deployment/gcp-sb --type=LoadBalancer --target-port=8080 --port=80 --name=gcp-sb-lb
+kubectl expose deployment/gcp-sb --type=LoadBalancer --target-port=8080 --name=gcp-sb-lb
 ```
 
-Again, change the port to the one you chose to expose if it's something other than 8080. The port is required to be 80 here because the service catalog does not allow you to specify a port for the service broker (or as far as I can tell at least).
+Again, change the port to the one you chose to expose if it's something other than 8080.
 
 You should be able to see the service running
 
