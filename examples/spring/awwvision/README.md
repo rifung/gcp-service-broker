@@ -17,6 +17,54 @@ Awwvision: Spring Boot edition has two endpoints:
 
 1. Enable the [Vision](https://console.cloud.google.com/apis/api/vision.googleapis.com) and [Storage](https://console.cloud.google.com/apis/api/storage_component) APIs. See the [Vision API Quickstart](https://cloud.google.com/vision/docs/quickstart) and [Storage API Quickstart](https://cloud.google.com/storage/docs/quickstart-console) for more information on using the two APIs.
 
+## Build
+
+The way we currently build the Docker image is kind of sad: we build the jar locally and then build the Docker image using that jar. First, to build the jar we run
+
+```
+mvn package -DskipTests
+```
+
+Then to create the Docker image we run
+
+```
+docker build . -t <tag:version>
+```
+
+## Deploy to GKE
+
+Tag the previously built docker image to your GKE repo
+
+```
+docker tag <tag:version> us.gcr.io/<project_id>/<tag:version>
+```
+
+then push it with
+
+```
+gcloud docker -- push us.gcr.io/<project_id>/<tag:version>
+```
+
+Make sure you are on the correct cluster
+
+```
+kubectl config currenct-context
+```
+
+The easiest way to deploy is to use the awwvision.yaml found in the service-catalog repo because this app relies on secrets being exposed which are defined in that yaml file. To do that you would just run.
+
+```
+kubectl create -f awwvision.yaml
+```
+
+Alternatively you could run `kubectl run` manually and then edit the deployment to expose the secrets via `kubectl edit deployments/<deployment_name>`. You may have to restart the pods to get it to see the secrets.
+
+Regardless of your method of deployment you need to expose it with
+
+```
+kubectl expose deployment awwvision --type=LoadBalancer --target-port=8080 --name=awwvision-lb
+```
+
 ## Run the application on Cloud Foundry
 
 1. Log in to your Cloud Foundry using the `cf login` command.
