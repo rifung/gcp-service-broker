@@ -54,7 +54,7 @@ func SetGCPCredsFromEnv() error {
 func MapServiceIdToName() (map[string]string, error) {
 	idToNameMap := make(map[string]string)
 	var serviceList []models.Service
-	serviceStr := os.Getenv("SERVICES")
+	serviceStr := creds.GetServices()
 	if err := json.Unmarshal([]byte(serviceStr), &serviceList); err != nil {
 		return idToNameMap, fmt.Errorf("Error unmarshalling service list %s", err)
 	}

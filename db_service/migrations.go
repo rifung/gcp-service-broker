@@ -34,7 +34,7 @@ func RunMigrations(db *gorm.DB) error {
 
 	// initial migration - creates tables
 	migrations[0] = func() error {
-		if err := db.Exec(`CREATE TABLE service_instance_details (
+		if err := db.Exec(`CREATE TABLE IF NOT EXISTS service_instance_details (
 			  id varchar(255) NOT NULL DEFAULT '',
 			  created_at timestamp NULL DEFAULT NULL,
 			  updated_at timestamp NULL DEFAULT NULL,
@@ -51,7 +51,7 @@ func RunMigrations(db *gorm.DB) error {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8`).Error; err != nil {
 			return err
 		}
-		if err := db.Exec(`CREATE TABLE service_binding_credentials (
+		if err := db.Exec(`CREATE TABLE IF NOT EXISTS service_binding_credentials (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  created_at timestamp NULL DEFAULT NULL,
 			  updated_at timestamp NULL DEFAULT NULL,
@@ -65,7 +65,7 @@ func RunMigrations(db *gorm.DB) error {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8`).Error; err != nil {
 			return err
 		}
-		if err := db.Exec(`CREATE TABLE provision_request_details (
+		if err := db.Exec(`CREATE TABLE IF NOT EXISTS provision_request_details (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  created_at timestamp NULL DEFAULT NULL,
 			  updated_at timestamp NULL DEFAULT NULL,
@@ -77,7 +77,7 @@ func RunMigrations(db *gorm.DB) error {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8`).Error; err != nil {
 			return err
 		}
-		if err := db.Exec(`CREATE TABLE plan_details (
+		if err := db.Exec(`CREATE TABLE IF NOT EXISTS plan_details (
 			  id varchar(255) NOT NULL DEFAULT '',
 			  created_at timestamp NULL DEFAULT NULL,
 			  updated_at timestamp NULL DEFAULT NULL,
@@ -89,7 +89,7 @@ func RunMigrations(db *gorm.DB) error {
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8`).Error; err != nil {
 			return err
 		}
-		if err := db.Exec(`CREATE TABLE migrations (
+		if err := db.Exec(`CREATE TABLE IF NOT EXISTS migrations (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  created_at timestamp NULL DEFAULT NULL,
 			  updated_at timestamp NULL DEFAULT NULL,
@@ -104,7 +104,7 @@ func RunMigrations(db *gorm.DB) error {
 
 	// adds CloudOperation table
 	migrations[1] = func() error {
-		if err := db.Exec(`CREATE TABLE cloud_operations (
+		if err := db.Exec(`CREATE TABLE IF NOT EXISTS cloud_operations (
 			  id int(10) unsigned NOT NULL AUTO_INCREMENT,
 			  created_at timestamp NULL DEFAULT NULL,
 			  updated_at timestamp NULL DEFAULT NULL,
